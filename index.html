@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aditya Degree College Vizianagaram - Placement Cell</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      color: #004080;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background: #004080;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #003366;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #004080;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Aditya Degree College Vizianagaram</h1>
+    <h2>Placement Cell - Company Enrollment Dashboard</h2>
+  </header>
+
+  <div class="container">
+
+    <!-- Add Company Form -->
+    <form id="companyForm">
+      <h2>Add New Company</h2>
+      <label for="companyName">Company Name:</label>
+      <input type="text" id="companyName" required />
+
+      <label for="eligibleDepartments">Eligible Departments (Ctrl+Click to select multiple):</label>
+      <select id="eligibleDepartments" multiple required>
+        <option value="BSc">B.Sc</option>
+        <option value="BCom">B.Com</option>
+        <option value="BA">B.A</option>
+        <option value="BBA">BBA</option>
+        <option value="BCA">BCA</option>
+        <option value="MSc">M.Sc</option>
+      </select>
+
+      <button type="submit">Add Company</button>
+    </form>
+
+    <!-- Student Enrollment Form -->
+    <form id="enrollForm">
+      <h2>Student Enrollment</h2>
+      <label for="studentName">Student Name:</label>
+      <input type="text" id="studentName" required />
+
+      <label for="studentDept">Department:</label>
+      <select id="studentDept" required>
+        <option value="">--Select Department--</option>
+        <option value="BSc">B.Sc</option>
+        <option value="BCom">B.Com</option>
+        <option value="BA">B.A</option>
+        <option value="BBA">BBA</option>
+        <option value="BCA">BCA</option>
+        <option value="MSc">M.Sc</option>
+      </select>
+
+      <label for="companySelect">Select Company:</label>
+      <select id="companySelect" required>
+        <option value="">--No companies added--</option>
+      </select>
+
+      <button type="submit">Enroll</button>
+    </form>
+
+    <!-- Enrolled Students Table -->
+    <h2>Enrolled Students</h2>
+    <table id="enrolledTable">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Department</th>
+          <th>Company</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Enrolled students will appear here -->
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    const companyForm = document.getElementById('companyForm');
+    const enrollForm = document.getElementById('enrollForm');
+    const companySelect = document.getElementById('companySelect');
+    const enrolledTableBody = document.querySelector('#enrolledTable tbody');
+
+    let companies = [];
+
+    companyForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('companyName').value;
+      const eligibleDepartments = Array.from(document.getElementById('eligibleDepartments').selectedOptions).map(opt => opt.value);
+
+      if (!name || eligibleDepartments.length === 0) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const company = { name, eligibleDepartments };
+      companies.push(company);
+      updateCompanySelect();
+      alert('Company added successfully!');
+      companyForm.reset();
+    });
+
+    function updateCompanySelect() {
+      const studentDept = document.getElementById('studentDept').value;
+      companySelect.innerHTML = '<option value="">--Select Company--</option>';
+      companies.forEach(company => {
+        if (!studentDept || company.eligibleDepartments.includes(studentDept)) {
+          const option = document.createElement('option');
+          option.value = company.name;
+          option.textContent = company.name;
+          companySelect.appendChild(option);
+        }
+      });
+    }
+
+    document.getElementById('studentDept').addEventListener('change', updateCompanySelect);
+
+    enrollForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const studentName = document.getElementById('studentName').value;
+      const studentDept = document.getElementById('studentDept').value;
+      const selectedCompany = companySelect.value;
+
+      if (!studentName || !studentDept || !selectedCompany) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const row = enrolledTableBody.insertRow();
+      row.insertCell(0).textContent = studentName;
+      row.insertCell(1).textContent = studentDept;
+      row.insertCell(2).textContent = selectedCompany;
+
+      enrollForm.reset();
+      updateCompanySelect(); // Reset company list based on cleared dept
+    });
+  </script>
+
+</body>
+</html>

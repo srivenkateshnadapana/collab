@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manga Artists Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+    header {
+      background-color: #1c1f26;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    .search-box {
+      margin-bottom: 1.5rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #2f3542;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: sticky;
+        top: 0;
+        background-color: #2f3542;
+      }
+      td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+      }
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Manga Artists Dashboard</h1>
+    <p>Explore various manga artists and their collections</p>
+  </header>
+
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by artist or manga name..." onkeyup="filterTable()">
+    </div>
+    
+    <table id="artistsTable">
+      <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Notable Works</th>
+          <th>Genre</th>
+          <th>Years Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Artist">Eiichiro Oda</td>
+          <td data-label="Notable Works">One Piece</td>
+          <td data-label="Genre">Adventure, Fantasy</td>
+          <td data-label="Years Active">1992–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Masashi Kishimoto</td>
+          <td data-label="Notable Works">Naruto</td>
+          <td data-label="Genre">Action, Ninja</td>
+          <td data-label="Years Active">1997–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Akira Toriyama</td>
+          <td data-label="Notable Works">Dragon Ball, Dr. Slump</td>
+          <td data-label="Genre">Martial Arts, Sci-Fi</td>
+          <td data-label="Years Active">1978–2024</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Naoko Takeuchi</td>
+          <td data-label="Notable Works">Sailor Moon</td>
+          <td data-label="Genre">Magical Girl, Romance</td>
+          <td data-label="Years Active">1986–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Tite Kubo</td>
+          <td data-label="Notable Works">Bleach</td>
+          <td data-label="Genre">Action, Supernatural</td>
+          <td data-label="Years Active">1996–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Kentaro Miura</td>
+          <td data-label="Notable Works">Berserk</td>
+          <td data-label="Genre">Dark Fantasy, Horror</td>
+          <td data-label="Years Active">1985–2021</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Hajime Isayama</td>
+          <td data-label="Notable Works">Attack on Titan</td>
+          <td data-label="Genre">Post-apocalyptic, Action</td>
+          <td data-label="Years Active">2006–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Rumiko Takahashi</td>
+          <td data-label="Notable Works">Inuyasha, Ranma ½</td>
+          <td data-label="Genre">Comedy, Supernatural</td>
+          <td data-label="Years Active">1978–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">CLAMP</td>
+          <td data-label="Notable Works">Cardcaptor Sakura, xxxHolic</td>
+          <td data-label="Genre">Fantasy, Shojo</td>
+          <td data-label="Years Active">1989–present</td>
+        </tr>
+        <tr>
+          <td data-label="Artist">Yoshihiro Togashi</td>
+          <td data-label="Notable Works">Hunter x Hunter, Yu Yu Hakusho</td>
+          <td data-label="Genre">Action, Supernatural</td>
+          <td data-label="Years Active">1987–present</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("artistsTable");
+      const tr = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < tr.length; i++) {
+        const tdArtist = tr[i].getElementsByTagName("td")[0];
+        const tdWork = tr[i].getElementsByTagName("td")[1];
+        if (tdArtist && tdWork) {
+          const artistText = tdArtist.textContent.toLowerCase();
+          const workText = tdWork.textContent.toLowerCase();
+          if (artistText.includes(filter) || workText.includes(filter)) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
